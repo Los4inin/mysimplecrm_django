@@ -1,0 +1,65 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div id="content">
+  <div id="leftblock">
+    {% if project_list %}
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+        <tr>
+         <td>Название</td><td width='60'>Статус</td><td width='130'>Дата</td>
+        </tr>
+       </thead>
+
+      {% for project in project_list %}
+      <tr>
+        <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
+        <td align='center'><a href="{{ project.get_absolute_url }}">{{ project.status }}</a></td>
+        <td align='right'><a href="{{ project.get_absolute_url }}">{{ project.mod_date }}</a></td>
+      </tr>
+      {% endfor %}
+
+      </table>
+    </div>
+    {% else %}
+      <p>There are no projects in the crm.</p>
+    {% endif %}
+  </div>
+
+  <div id="rightblock">
+  <br>
+  <form action="/crm/project/create/">
+    <input type="submit" class="txtbtn" value="Новый Проект">
+  </form>
+  Поиск:
+   <div class="search">
+     <form action="{% url 'project_search' %}" method="get">
+       <input class="txtbtn" name="q" type="text" placeholder="Поиск Проектов">
+     </form>
+<br><br>
+     <form action="{% url 'projects_active' %}">
+       <input type="submit" class="txtbtn" value="Активные проекты">
+     </form>
+   </div>
+   {% block pagination %}
+     {% if is_paginated %}
+       <div class="pagination">
+           <span class="page-links">
+               {% if page_obj.has_previous %}
+                   <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+               {% endif %}
+               <span class="page-current">
+                   Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+               </span>
+               {% if page_obj.has_next %}
+                   <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+               {% endif %}
+           </span>
+       </div>
+   {% endif %}
+ {% endblock %}
+   </div>
+
+</div>
+{% endblock %}

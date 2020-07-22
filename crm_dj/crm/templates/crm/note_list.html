@@ -1,0 +1,66 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div id="content">
+  <div id="leftblock">
+    {% if note_list %}
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+          <tr>
+           <td width='85%'>Текст Заметки</td>
+           <td width='15%'>Дата Напоминания</td>
+          </tr>
+       </thead>
+
+      {% for note in note_list %}
+      <tr>
+        <td><a href=" {{ note.get_absolute_url }} ">{{ note.text }}</a></td>
+        <td align='right'>{{ note.reminder_date }}</td>
+      </tr>
+      <tr>
+        <td></td><td></td><td></td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>
+
+    {% else %}
+      <p>There are no notes in the crm.</p>
+    {% endif %}
+  </div>
+
+  <div id="rightblock">
+  <br>
+  <form action="{% url 'note_create' %}">
+    <input type="submit" class="txtbtn" value="Новая Заметка">
+  </form>
+
+  <br><br>
+  <form action="{% url 'notes_today' %}">
+    <input type="submit" class="txtbtn" value="Заметки на сегодня">
+  </form>
+  <br>
+  <form action="{% url 'notes' %}">
+    <input type="submit" class="txtbtn" value="Заметки все">
+  </form>
+  {% block pagination %}
+    {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+              {% endif %}
+              <span class="page-current">
+                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}
+{% endblock %}
+
+</div>
+{% endblock %}

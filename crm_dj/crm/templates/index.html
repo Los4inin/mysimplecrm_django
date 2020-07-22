@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div id="content">
+  <div id="leftblock">
+    <div align="left">
+      <br>
+      Вы успешно вошли в систему.
+      <br><br>
+      Пользователь:
+      {% if user.is_authenticated %}
+        User: {{ user.get_username }}, <a href="{% url 'logout'%}?next={{request.path}}">/logout</a>
+      {% else %}
+        <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+      {% endif %}
+      <br><br>
+      The CRM has the following record counts:
+      <br>
+      <ul>
+        <li><strong>Accounts:</strong> {{ num_accounts }}</li>
+        <li><strong>Contacts:</strong> {{ num_contacts }}</li>
+        <li><strong>Projects:</strong> {{ num_projects }}</li>
+        <li><strong>Notes:</strong> {{ num_notes }}</li>
+      </ul>
+
+    </div>
+
+  </div>
+  <div id="rightblock">
+  </div>
+  </div>
+
+{% endblock %}

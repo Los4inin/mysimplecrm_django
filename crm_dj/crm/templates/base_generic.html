@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MySympleCRM</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+    <meta name="description" content="MySympleCRM - простая удобная и открытая CRM система">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+  </head>
+
+
+  <body>
+    <div id="wrapper">
+      <header>
+        <div id="logo">
+  	       <a href="{% url 'index' %}" title="На главную">
+
+  	          <img src="{% static 'img/logo.png' %} " title="MySympleCRM" alt="MySympleCRM">
+  	       </a>
+        </div>
+        <div class="bigres">
+          <div id="menu">CRM for IMTT.
+            {% if user.is_authenticated %}
+              User: {{ user.get_username }}, <a href="{% url 'logout'%}?next={{request.path}}">/logout</a>
+            {% else %}
+              <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+            {% endif %}
+
+          </div>
+        </div>
+      </header>
+
+      <div id="main">
+        <div id="leftmenu">
+          <div class="bigres">
+     	      <div id="leftmenubtn"><a href=" {% url 'accounts' %} "><i class="fa fa-industry" aria-hidden="true"></i> Компании</a></div><br>
+     	      <div id="leftmenubtn"><a href=" {% url 'contacts' %} "><i class="fa fa-users" aria-hidden="true"></i> Контакты</a></div><br>
+     	      <div id="leftmenubtn"><a href=" {% url 'projects' %} "><i class="fa fa-briefcase" aria-hidden="true"></i> Проекты</a></div><br>
+            <div id="leftmenubtn"><a href=" {% url 'notes' %} "><i class="fa fa-comment-o" aria-hidden="true"></i> Заметки</a></div><br>
+          </div>
+        </div>
+
+  {% block content %}
+  {% endblock %}
+
+<!-- block pagination -->
+
+
+      </div>
+
+      <footer>
+        <div id="telmail"></div>
+      </footer>
+      </div>
+    </body>
+  </html>

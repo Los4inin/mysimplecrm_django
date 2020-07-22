@@ -1,0 +1,47 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div id="content">
+  <div id="leftblock">
+    {% if contact_list %}
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+        <tr>
+         <td>Фамилия</td><td>Имя</td><td>Должность</td><td>Телефон</td><td>E-mail</td>
+        </tr>
+       </thead>
+
+      {% for contact in contact_list %}
+      <tr>
+        <td><a href="{{ contact.get_absolute_url }}">{{ contact.surname }}</a></td>
+        <td><a href="{{ contact.get_absolute_url }}">{{ contact.firstname }}</a></td>
+        <td><a href="{{ contact.get_absolute_url }}">{{ contact.job }}</a></td>
+        <td>{{contact.tel1}}</td>
+        <td>{{contact.email1}}</td>
+      </tr>
+      {% endfor %}
+
+      </table>
+    </div>
+    {% else %}
+      <p>There are no contacts in the crm.</p>
+    {% endif %}
+  </div>
+
+  <div id="rightblock">
+  <br>
+  <form action="/crm/contact/create/">
+    <input type="submit" class="txtbtn" value="Новый Контакт">
+  </form>
+  Поиск:
+   <div class="search">
+     <form action="{% url 'contact_search' %}" method="get">
+       <input class="txtbtn" name="q" type="text" placeholder="Поиск контактов">
+     </form>
+
+   </div>
+   </div>
+
+</div>
+{% endblock %}

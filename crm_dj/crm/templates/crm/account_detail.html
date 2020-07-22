@@ -1,0 +1,111 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div id="content">
+ <div id="leftblock">
+ 	<img src="{{ account.get_img_url }}">
+ 	<div id="name"><a href=" {{ account.get_absolute_url }} "> {{ account.company_name }} </a></div>
+ 	<div id="code"> {{ account.code }} &nbsp&nbsp id: {{ account.id }} <br>
+    <a href=" {{ account.www }} " target="_blank"> {{ account.www }} </a></div>
+    <table cellpadding="5px">
+      {% if account.inn != '0' %}<tr><td  width="155" align="right">ИНН:</td><td align="left"> {{ account.inn }} </td></tr>{% endif %}
+      {% if account.tel1 %}<tr><td  width="155" align="right">Телефон:</td><td align="left"> {{ account.tel1 }} </td></tr>{% endif %}
+      {% if account.tel2 %}<tr><td align="right">Доп телефон:</td><td align="left"> {{ account.tel2 }} </td></tr>{% endif %}
+
+      {% if account.region %}<tr><td align="right">Время на заводе:</td><td align="left"> {{ account.get_local_time }} </td></tr>{% endif %}
+
+      {% if account.email1 %}<tr><td align="right">Почта:</td><td align="left"> {{ account.email1 }} </td></tr>{% endif %}
+      {% if account.email2 %}<tr><td align="right">Доп почта:</td><td align="left"> {{ account.email2 }} </td></tr>{% endif %}
+      {% if account.region %}<tr><td align="right">Регион:</td><td align="left"> {{ account.region }} </td></tr>{% endif %}
+      {% if account.parent_acc_id %}<tr><td align="right">Parent Account:</td><td align="left"><a href="/crm/account/{{ account.parent_acc_id }}"> {{ account.parent_acc_id }} </a></td></tr>{% endif %}
+      {% if account.relation %}<tr><td align="right">Ссылки:</td><td align="left"> {{ account.relation }} </td></tr>{% endif %}
+      {% if account.inn != '0' %}
+      {% for entry in account.get_fin_by_inn %}
+      <tr><td align="right">{{ entry.0 }} год:</td><td align="left">Выручка {{ entry.1 }}, 000 000 рублей </td></tr>
+       {% endfor %}
+      {% endif %}
+
+    </table>
+
+
+    {% if account.contact_set.all %}
+    <h2>Контакты</h2>
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+        <tr>
+         <td>Фамилия</td><td>Имя</td><td>Должность</td><td>Телефон</td><td>E-mail</td>
+        </tr>
+       </thead>
+
+      {% for entry in account.contact_set.all %}
+      <tr>
+        <td><a href="{{ entry.get_absolute_url }}">{{ entry.surname }}</a></td>
+        <td><a href="{{ entry.get_absolute_url }}">{{ entry.firstname }}</a></td>
+        <td><a href="{{ entry.get_absolute_url }}">{{ entry.job }}</a></td>
+        <td>{{entry.tel1}}</td>
+        <td>{{entry.email1}}</td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>{% endif %}
+
+    {% if account.project_set.all %}
+
+    <h2>Проекты</h2>
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+        <tr>
+         <td>Название</td><td width='165'>Дата</td>
+        </tr>
+       </thead>
+
+      {% for entry in account.project_set.all %}
+      <tr>
+        <td><a href="{{ entry.get_absolute_url }}">{{ entry.name }}</a></td>
+        <td><a href="{{ entry.get_absolute_url }}">{{ entry.mod_date }}</a></td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>{% endif %}
+
+    {% if account.note_set.all %}
+    <h2>Заметки</h2>
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+        <tr>
+         <td>Текст Заметки</td>
+         <td width='140'>Дата Напоминания</td>
+         <td width='140'>Дата Создания</td>
+        </tr>
+       </thead>
+
+      {% for entry in account.note_set.all %}
+      <tr>
+        <td><a href=" {{ entry.get_absolute_url }} ">{{ entry.text }}</a></td>
+        <td>{{ entry.reminder_date }}</td>
+        <td>{{ entry.create_date }}</td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>{% endif %}
+
+ </div>
+ <div id="rightblock">
+ <br>
+ <form action="{{ account.get_update_url }}">
+   <input type="submit" class="txtbtn" value="Изменить">
+ </form>
+ <br> <br> <br> <br> <br> <br> <br> <br>
+ <table>
+   <tr><td align="right">Тип:</td><td align="left"> {{ account.get_type_display }} </td></tr>
+   <tr><td align="right">Дата редактирования:</td><td align="left"> {{ account.mod_date }} </td></tr>
+   <tr><td align="right">Дата создания:</td><td align="left"> {{ account.create_date }} </td></tr>
+ </table>
+
+ </div>
+
+{% endblock %}

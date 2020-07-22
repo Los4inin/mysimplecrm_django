@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div id="content">
+ <div id="leftblock">
+    <img src="{{ project.get_img_url }}">
+
+    <div id="name"> {{ project.name }} </div>
+    <table cellpadding="5px">
+       <tr><td width="155" align="right">Компания:</td><td align="left"><a href="{% url 'account-detail' project.parent_acc.pk %}">{{ project.parent_acc }}</a></td></tr>
+       <tr><td align="right">Производитель:</td><td align="left"><a href="/crm/account/{{ project.producer_id }} ">{{ project.producer_id }}</a></td></tr>
+       {%if project.parent_cont %}
+       <tr><td align="right">Ответственное лицо:</td><td align="left"><a href=" {% url 'contact-detail' project.parent_cont.pk %} ">{{ project.parent_cont }}</a></td></tr>
+       {% endif %}{%if project.agent_id %}
+       <tr><td align="right">Дилер:</td><td align="left"><a href="/crm/account/{{ project.agent_id }} "> {{ project.agent_id }} </a></td></tr>
+       {% endif %}
+     </table>
+
+     {% if project.note_set.all %}
+        <h2>Заметки</h2>
+        <div id="table">
+          <table cellpadding="2px" style="table-layout: fixed;">
+           <thead bgcolor="#f1f1f1">
+            <tr>
+             <td>Текст Заметки</td>
+             <td width='140'>Дата Напоминания</td>
+             <td width='140'>Дата Создания</td>
+            </tr>
+           </thead>
+
+          {% for entry in project.note_set.all %}
+          <tr>
+            <td><a href=" {{ entry.get_absolute_url }} ">{{ entry.text }}</a></td>
+            <td>{{ entry.reminder_date }}</td>
+            <td>{{ entry.create_date }}</td>
+          </tr>
+          {% endfor %}
+          </table>
+        </div>{% endif %}
+
+   </div>
+
+ <div id="rightblock">
+ <br>
+ <form action="{{ project.get_update_url }}">
+   <input type="submit" class="txtbtn" value="Изменить">
+ </form>
+   <br> <br> <br> <br> <br> <br>
+
+ <table>
+   <tr><td align="right">Статус:</td><td align="left">{{ project.get_status_display }}</td></tr>
+   <tr><td align="right">Дата редактирования:</td><td align="left"> {{ project.mod_date }}  </td></tr>
+   <tr><td align="right">Дата создания:</td><td align="left"> {{ project.create_date }} </td></tr>
+ </table>
+
+ </div>
+
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div id="content">
+  <div id="leftblock">
+    {% if project_list %}
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+        <tr>
+         <td>Название</td><td width='165'>Дата</td>
+        </tr>
+       </thead>
+
+      {% for project in project_list %}
+      <tr>
+        <td><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></td>
+        <td><a href="{{ project.get_absolute_url }}">{{ project.mod_date }}</a></td>
+      </tr>
+      {% endfor %}
+
+      </table>
+    </div>
+    {% else %}
+      <p>There are no projects in the crm.</p>
+    {% endif %}
+  </div>
+
+  <div id="rightblock">
+  <br>
+  <form action="/crm/project/create/">
+    <input type="submit" class="txtbtn" value="Новый Проект">
+  </form>
+  Поиск:
+   <div class="search">
+     <form action="{% url 'project_search' %}" method="get">
+       <input class="txtbtn" name="q" type="text" placeholder="Поиск Проектов">
+     </form>
+   </div>
+   </div>
+
+</div>
+{% endblock %}

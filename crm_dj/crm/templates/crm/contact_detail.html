@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div id="content">
+ <div id="leftblock">
+   <img src="{{ contact.get_img_url }}">
+    <div id="name"> {{ contact.surname }} {{ contact.firstname }} {{ contact.middlename }} </div>
+   	<div id="code"><a href="{% url 'account-detail' contact.parent_acc.pk %}">{{ contact.parent_acc }}</a></div>
+   	<table cellpadding="5px">
+   	 {% if contact.appeal %}<tr><td width="155" align="right">Обращение:</td><td align="left">{{ contact.appeal }}</td></tr>{% endif %}
+   	 {% if contact.job %}<tr><td width="155" align="right">Должность:</td><td align="left">{{ contact.job }}</td></tr>{% endif %}
+   	 {% if contact.tel1 %}<tr><td width="155" align="right">Телефон:</td><td align="left">{{ contact.tel1 }} </td></tr>{% endif %}
+   	 {% if contact.tel2 %}<tr><td width="155" align="right">Телефон:</td><td align="left">{{ contact.tel2 }}</td></tr>{% endif %}
+   	 {% if contact.email1 %}<tr><td width="155" align="right">Почта:</td><td align="left">{{ contact.email1 }} </td></tr>{% endif %}
+   	 {% if contact.email2 %}<tr><td width="155" align="right">Почта:</td><td align="left">{{ contact.email2 }}</td></tr>{% endif %}
+   	</table>
+
+    {% if contact.note_set.all %}
+       <h2>Заметки</h2>
+       <div id="table">
+         <table cellpadding="2px" style="table-layout: fixed;">
+          <thead bgcolor="#f1f1f1">
+           <tr>
+            <td>Текст Заметки</td>
+            <td width='140'>Дата Напоминания</td>
+            <td width='140'>Дата Создания</td>
+           </tr>
+          </thead>
+
+         {% for entry in contact.note_set.all %}
+         <tr>
+           <td><a href=" {{ entry.get_absolute_url }} ">{{ entry.text }}</a></td>
+           <td>{{ entry.reminder_date }}</td>
+           <td>{{ entry.create_date }}</td>
+         </tr>
+         {% endfor %}
+         </table>
+       </div>{% endif %}
+
+   </div>
+
+
+ <div id="rightblock">
+ <br>
+ <form action="{{ contact.get_update_url }}">
+   <input type="submit" class="txtbtn" value="Изменить">
+ </form>
+  <br> <br> <br> <br> <br> <br> <br>
+<table>
+<tr><td align="right">id:</td><td align="left">{{ contact.id }}</td></tr>
+<tr><td align="right">Дата изменения:</td><td align="left">{{ contact.mod_date }} </td></tr>
+<tr><td align="right">Дата создания:</td><td align="left">{{ contact.create_date }} </td></tr>
+</table>
+ </div>
+
+{% endblock %}

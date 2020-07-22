@@ -1,0 +1,50 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div id="content">
+  <div id="leftblock">
+    {% if account_list %}
+    <div id="table">
+      <table cellpadding="2px" style="table-layout: fixed;">
+       <thead bgcolor="#f1f1f1">
+        <tr>
+         <td width='75'>CODE__</td><td >Название компании</td>
+         <td>сайт</td>
+         <td width='165'>Телефон</td><td>E-mail</td>
+        </tr>
+       </thead>
+
+      {% for account in account_list %}
+      <tr>
+        <td><a href="{{ account.get_absolute_url }}">{{ account.code }}</a></td>
+        <td><a href="{{ account.get_absolute_url }}">{{ account.company_name }}</a></td>
+        <td><a href='{{account.www}}' target='_blank'>{{account.www}}</a></td>
+        <td>{{account.tel1}}</td>
+        <td>{{account.email1}}</td>
+      </tr>
+      {% endfor %}
+
+      </table>
+    </div>
+    {% else %}
+      <p>There are no accounts in the crm.</p>
+    {% endif %}
+  </div>
+
+  <div id="rightblock">
+  <br>
+  <form action="/crm/account/create/">
+    <input type="submit" class="txtbtn" value="Новая Компания">
+  </form>
+  Поиск:
+   <div class="search">
+     <form action="{% url 'account_search' %}" method="get">
+       <input class="txtbtn" name="search" type="text" placeholder="название компании">
+     </form>
+
+   </div>
+   </div>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div id="content">
+ <div id="leftblock">
+    <img src="{{ project.get_img_url }}">
+
+    <div id="name"> Заметка  - Напоминание </div>
+    <table cellpadding="5px">
+       <tr><td width="155" align="right">Текст Заметки:</td><td align="left">{{ note.text }}</td></tr>
+       <tr><td width="155" align="right">Компания:</td><td align="left"><a href=" {% url 'account-detail' note.parent_acc.pk %} ">{{ note.parent_acc }}</a></td></tr>
+       {%if note.parent_cont %}<tr><td align="right">Ответственное лицо:</td><td align="left"><a href=" {% url 'contact-detail' note.parent_cont.pk %} ">{{ note.parent_cont }}</a></td></tr>{% endif %}
+       {%if note.parent_proj %}
+       <tr><td align="right">Связанные проект:</td><td align="left"><a href=" {% url 'project-detail' note.parent_proj.pk %} "> {{ note.parent_proj }} </a></td></tr>
+       {% endif %}
+     </table>
+
+   </div>
+
+ <div id="rightblock">
+ <br>
+ <form action=" {{ note.get_update_url }} ">
+   <input type="submit" class="txtbtn" value="Изменить">
+ </form>
+   <br> <br> <br> <br> <br> <br>
+
+ <table>
+   <tr><td align="right">Дата напоминания:</td><td align="left"> {{ note.reminder_date }}  </td></tr>
+   <tr><td align="right">Дата создания:</td><td align="left"> {{ note.create_date }} </td></tr>
+ </table>
+
+ </div>
+
+{% endblock %}
